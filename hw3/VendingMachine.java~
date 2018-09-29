@@ -1,0 +1,65 @@
+public class VendingMachine {
+
+    private static double totalSales;
+    private VendingItem[][][] shelf;
+    private int luckyChance;
+    private Random rand;
+
+    public VendingMachine() {
+        totalSales = 0;
+        shelf = new VendingItem[6][3][5];
+        luckyChance = 0;
+        rand = new Random();
+        restock();
+    }
+
+    public VendingItem vend(String code) {
+        boolean validInput = true;
+        String numberRegex = ".*[1-3].*";
+        String letterRegex = ".*[A-F].*";
+        if (code.length() != 2
+            || !(code.matches(numberRegex)
+                 && code.matches(letterRegex))) {
+            validInput = false;
+        }
+        else {
+            if (!(code.charAt(0).matches(letterRegex)
+                  && code.charAt(1).matches(numberRegex))) {
+                validInput = false;
+            }
+        }
+
+        if (validInput) {
+            int currentRow = (int)(code.charAt(0)) - 65;
+            int currentCol = Character.getNumericValue(code.charAt(1));
+            if (shelf[currentRow][currentCol][0] == null) {
+                System.out.println("ERROR: No More Items Left.");
+                return null;
+            }
+            else {
+                VendingItem temp = shelf[currentRow][currentCol][0];
+                for (int i = 0; i < 5; i++) {
+                    if (i == 4) {
+                        shelf[currentRow][currentCol][i] = null;
+                    }
+                    else {
+                        shelf[currentRow][currentCol][i] =
+                            shelf[currentRow][currentCol][i+1];
+                    }
+                }
+                if (free()) {
+                    System.out.println("Congrats! You Got A Free Item!");
+                    return temp;
+                }
+                else {
+                    return temp;
+                }
+            }
+        }
+        else {
+            System.out.println("ERROR: Invalid Input.");
+            return null;
+        }
+        
+    }
+}
