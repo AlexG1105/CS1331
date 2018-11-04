@@ -1,0 +1,68 @@
+public class RogueAI extends AI {
+    private int firewallProtection;
+    private int alertLevel;
+    private final int maxAlert;
+
+    public RogueAI(int firewallProtection, int alertLevel,
+                   int maxAlert, Coordinates cannonTarget,
+                   Coordinates secretHQ) {
+        super(cannonTarget, secretHQ);
+        this.firewallProtection = firewallProtection;
+        this.alertLevel = alertLevel;
+        this.maxAlert = maxAlert;
+    }
+
+    public RogueAI(int firewallProtection, int maxAlert,
+                   Coordinates cannonTarget,
+                   Coordinates secretHQ) {
+        this(firewallProtection, 0, maxAlert,
+             cannonTarget, secretHQ);
+    }
+
+    public RogueAI(int firewallProtection,
+                   Coordinates cannonTarget,
+                   Coordinates secretHQ) {
+        this(firewallProtection, 0, 10,
+             cannonTarget, secretHQ);
+    }
+
+    public void lowerFirewall() {
+        firewallProtection -= 2;
+        alertLevel ++;
+    }
+
+    public boolean shouldSwapCannonTarget() {
+        if (firewallProtection <= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean shouldSelfDestruct() {
+        if (alertLevel >= maxAlert) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int getFireWallProtection() {
+        return firewallProtection;
+    }
+
+    public int getAlertLevel() {
+        return alertLevel;
+    }
+
+    public int getMaxAlert() {
+        return maxAlert;
+    }
+
+    public String toString() {
+        return ("Dr. Chipotle's guacamole cannon is currently " +
+            "pointed at " + cannonTarget + ", and is at alert" +
+            " level " + getAlertLevel() + " with firewall" +
+            " protection " + getFirewallProtection() + ".");
+    }
+}
